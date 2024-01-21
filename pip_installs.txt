@@ -1,0 +1,16 @@
+elevenlabs
+openai
+wheel
+SpeechRecognition
+opencv-python
+flask
+pyttsx3
+pygame
+pydub
+numpy
+gTTS
+pip install google-auth
+pip install google-auth-oauthlib
+pip install google-api-python-client
+PyQt5 
+PyQtWebEngine

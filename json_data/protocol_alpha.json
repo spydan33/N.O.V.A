@@ -1,0 +1,63 @@
+{
+    "sleep": {
+        "preset_responce": "sleep",
+        "method_name": "sleep",
+        "class_name": "nova",
+        "permission_level": "general"
+    },
+    "switch to text": {
+        "preset_responce": "text_input_only",
+        "method_name": "change_to_text",
+        "class_name": "nova",
+        "permission_level": "general"
+    },
+    "detect face": {
+        "preset_responce": "looking_for_face",
+        "method_name": "detect_face",
+        "class_name": "nova",
+        "permission_level": "general"
+    },
+    "set talk off": {
+        "preset_responce": "respond_talk_off",
+        "method_name": "set_talk_off",
+        "class_name": "nova",
+        "permission_level": "general"
+    },
+    "set talk on": {
+        "preset_responce": "respond_talk_on",
+        "method_name": "set_talk_on",
+        "class_name": "nova",
+        "permission_level": "general"
+    },
+    "escalate intellegence": {
+        "preset_responce": "switch_chat_model_gpt4",
+        "method_name": "change_open_AI_model",
+        "class_name": "nova",
+        "permission_level": "5"
+    },
+    "default intellegence": {
+        "preset_responce": "switch_chat_model_gpt3",
+        "method_name": "change_open_AI_model",
+        "class_name": "nova",
+        "permission_level": "5"
+    },
+    "save conversation": {
+        "preset_responce": "save_conversation",
+        "method_name": "save_chats",
+        "class_name": "nova",
+        "permission_level": "5"
+    },
+    "wake": {
+        "preset_responce": "wake_up",
+        "method_name": "wake_up",
+        "class_name": "nova",
+        "permission_level": "general"
+    },
+    "identify user": {
+        "preset_responce": "init.mp3",
+        "method_name": "identify_user",
+        "class_name": "nova",
+        "permission_level": "general"
+    }
+
+}
