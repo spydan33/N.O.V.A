@@ -1,0 +1,8 @@
+{
+    "smooth functions on": {
+        "preset_responce": "Activating smoothfunctions",
+        "method_name": "smooth_functions_on",
+        "class_name": "nova",
+        "permission_level": "1"
+    }
+}

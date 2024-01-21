@@ -1,0 +1,66 @@
+{
+    "code_save_question": {
+        "sound": "sounds/code_save_question.mp3",
+        "text": "Do you want me to save the code to a file? So you can read it?",
+        "needs_responce": true,
+        "responce_type": "affirmative",
+        "ret_response_name": "code_save_done"
+    },
+    "code_save_done": {
+        "sound": "sounds/code_save_done.mp3",
+        "text": "Okay, I saved the code to code_output.txt in the code folder of my files.",
+        "needs_responce": false
+    },
+    "init": {
+        "sound": "sounds/init.mp3",
+        "text": "Welcome back sir. I have finished initializing. Shall I start with default paramaters?",
+        "needs_responce": true,
+        "responce_type": "affirmative"
+    },
+    "explain": {
+        "sound": "sounds/explain_question.mp3",
+        "text": "Would you like me to explain this furthur?",
+        "needs_responce": true,
+        "responce_type": "affirmative"
+    },
+    "sleep": {
+        "sound": "sounds/sleep.mp3",
+        "text": "Entering sleep mode. Good night",
+        "needs_responce": false
+    },
+    "text_input_only": {
+        "sound": "sounds/switch_text_only.mp3",
+        "text": "I will no longer look for a face to start listening. You can now type to receive a responce.",
+        "needs_responce": false
+    },
+    "respond_talk_off": {
+        "sound": "sounds/respond_talk_off.mp3",
+        "text": "I will no longer respond vocally to your inputs.",
+        "needs_responce": false
+    },
+    "respond_talk_on": {
+        "sound": "sounds/respond_talk_on.mp3",
+        "text": "I will now respond vocally to your inputs.",
+        "needs_responce": false
+    },
+    "looking_for_face": {
+        "sound": "sounds/looking_for_face.mp3",
+        "text": "I will use face detection to determin when I listen for inputs.",
+        "needs_responce": false
+    },
+    "wake_up": {
+        "sound": "sounds/wake_up.mp3",
+        "text": "I'm awake and ready to get started.",
+        "needs_responce": false
+    },
+    "yes_question": {
+        "sound": "sounds/yes_question.mp3",
+        "text": "yes?",
+        "needs_responce": false
+    },
+    "sir_question": {
+        "sound": "sounds/sir_question.mp3",
+        "text": "sir?",
+        "needs_responce": false
+    }
+}

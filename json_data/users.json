@@ -1,0 +1,12 @@
+{
+    "Daniel": {
+        "permission_level": "root",
+        "face_encoding": [],
+        "voice_encoding": null,
+        "user_id": 1,
+        "matched_face":false,
+        "has_face_image":true,
+        "name": "Daniel"
+    }
+
+}

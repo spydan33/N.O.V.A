@@ -1,0 +1,6 @@
+palate:
+primary: #00191F
+Secondary: #113138
+third: #205D6B
+accent:#00576B
+root: black
