@@ -6,6 +6,8 @@ import logging
 import subprocess
 from nova import nova
 #url for flask is 'http://127.0.0.1:5000'
+
+#logging all server events
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 class NoLoggingFilter(logging.Filter):
@@ -14,13 +16,15 @@ class NoLoggingFilter(logging.Filter):
 
 
 app = Flask(__name__)
-
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.addFilter(NoLoggingFilter())
-
+#end server events
 
 @app.route('/')
 def index():
+    """ current_file_path = os.path.abspath(__file__)
+    current_directory = os.path.dirname(current_file_path)
+    print("Current dir path:", current_directory) """
     return render_template('jarvis_ui.html')
 
 @app.route('/gpt_ui')
@@ -58,7 +62,13 @@ def get_updates():
 @app.route('/load_once')
 def load_once():
     nova.calendar.update_nova_on_upcoming()
-    nova.prompted("greeting_events")
+    nova.attention.start()
+    #nova.prompted("greeting_events")
+    return 'true'
+
+@app.route('/verify_user')
+def verify_user():
+    nova.face.verify_face = True
     return 'true'
 
 @app.route('/save_chats')

@@ -1,0 +1,595 @@
+
+    <div id="main_content">
+        <div id="left_pane" class="pane">
+            <div id="options_container">
+                <div id="listen_for_name_container" class="option_container"><input type="checkbox" id="listen_for_name" name="listen_for_name"><label for="listen_for_name">Listen for name</label></div>
+                <div id="talk_container" class="option_container"><input type="checkbox" id="talk" name="talk"><label for="talk">Talk</label></div>
+                <div id="update_messages_btn_container" class="options_container"><button id="update_messages_btn" name="update_messages_btn">update messages</button></div>
+                <div id="save_chat_container" class="options_container"><button id="save_chat_btn" name="save_chat_btn">Save Chats</button></div>
+            </div>
+        </div>
+        
+        <button id="nova_ui" name="nova_ui" style="position: absolute; left: 10px; bottom:10px">Nova Full</button>
+        <!-- <span id="cpu_temp_container">CPU TEMP: <span id="cpu_temp">0</span></span> -->
+        <div id="chat_area">
+            <div id="nova_name_container" style="text-align: center;">
+                <span id="nova_name">Nova</span>
+            </div>
+            <div id="messages" class="custom_scroll">
+
+            </div>
+            
+            <div class="input-area">
+                <div id="input_container">
+                    <textarea type="text" id="messageInput" class="custom_scroll"></textarea>
+                </div>
+            </div>
+            
+        </div>
+
+        
+        <code id="code_pane" class="pane small_tab custom_scroll">
+
+        </code>
+        <code id="python_console" class="pane small_tab custom_scroll">
+            <textarea name="console_input" id="console_input" cols="30" rows="10"></textarea>
+        </code>
+        
+    <style>
+        .custom_scroll::-webkit-scrollbar {
+            background-color: #000;
+            width: 12px;
+            border-radius: 10px;
+        }
+        
+        .custom_scroll::-webkit-scrollbar-track {
+            border-radius: 10px;
+            box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+        }
+        
+        .custom_scroll::-webkit-scrollbar-thumb {
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(.5, #00576B), color-stop(1, #2681cc));
+            border-radius: 10px;
+        }
+        #main_content
+        {
+            width: 100%;
+            height: 100%;
+        }
+        body
+        {
+            color: white;
+            font-family: Rajdhani, sans-serif;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            height: 100vh;
+            text-align: center;
+            background-image: radial-gradient(#ffffff1b 1px,transparent 0),linear-gradient(70deg,#00191F 0%,#000000 100%);
+            background-size: 20px 20px,100% 100%;
+            background-position: -19px -19px,0 0;
+        }
+        button
+        {
+            cursor: pointer;
+            color: white;
+            padding: 10px 35px 15px 35px !important;
+            background-color: #00576B !important;
+            outline: none !important;
+            border: 1px solid #007896 !important;
+            font-weight: 600 !important;
+            margin: 10px 35px 15px 35px !important;
+        }
+        button:hover
+        {
+            background-color: #00576b00 !important;
+        }
+        .small_tab
+        {
+            cursor: pointer;
+            border-radius: 10px !important;
+            height: 10px !important;
+            width: 10px !important;
+            transition: 0.2s !important;
+            overflow: hidden !important;
+        }
+        .small_tab:hover
+        {
+            height: 20px !important;
+            width: 20px !important;
+        }
+        #event_cover
+        {
+            display: none;
+            z-index: 10;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        #python_console
+        {
+            font-size: 20px;
+            white-space: pre-wrap;
+            text-align: left;
+            overflow: auto;
+            top: 50px;
+            right: 10%;
+            z-index: 15;
+            height: 20vh;
+            width: 30vw;
+            transition: 1s;
+            background-image: linear-gradient(339deg, #11303894 , #113038ed 100%);
+            color: #00f2ff;
+        } 
+        #python_console.small_tab
+        {
+            top: 20px !important;
+            right: 20px !important;
+        }
+        #code_pane
+        {
+            font-size: 20px;
+            white-space: pre-wrap;
+            text-align: left;
+            overflow: auto;
+            top: 50px;
+            right: 25%;
+            z-index: 15;
+            height: 80vh;
+            width: 50vw;
+            transition: 1s;
+            background-image: linear-gradient(339deg, #11303894 , #113038ed 100%);
+            color: #10ff00;
+        }
+        #code_pane.small_tab
+        {
+            top: 20px !important;
+            right: 40px !important;
+        }
+        #messages
+        {
+            top: -5%;
+            position: relative;
+            overflow-y: auto;
+            max-height: 76%;
+        }
+        .message.nova_ret
+        {
+            text-align: center;
+            background-color: #11303882;
+        }
+        
+        .message.user_ret
+        {
+            text-align: center;
+            background-color: #205C6B82;
+        }
+        .message
+        {
+            padding: 10px;
+            max-height: fit-content;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+            justify-content: center;
+        }
+        #options_container
+        {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .option_container
+        {
+            margin: 5px 5px 5px 15px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        #input_container
+        {
+            bottom: 2%;
+            left: 15%;
+            min-height: 150px;
+            width: 70%;
+            color: white;
+            max-height: 300px;
+            align-items: center;
+            position: absolute;
+            display: inline-flex;
+            background-image: linear-gradient(339deg, #11303800 , #11303885 100%);
+            border-top-right-radius: 15px;
+        }
+        #messageInput
+        {
+            font-size: 24px !important;
+            font-family: auto;
+            width: 100%;
+            min-height: 30px;
+            max-height: fit-content;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 4px;
+            background-color: #f8f8f800;
+            font-size: 16px;
+            resize: none;
+            overflow-y: visible;
+            -webkit-appearance: none !important;
+            color: white;
+        }
+        
+        #messageInput:focus-visible 
+        {
+            -webkit-appearance: none !important;
+            border: none;
+            border: none !important;
+            outline: none;
+        }
+        #nova_name_container
+        {
+            z-index: 10;
+            position: relative;
+            height: 100px;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+        #nova_name
+        {
+            border-top-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            font-weight: 600;
+            background-color: #1130387a;
+            padding: 10px 35px 15px 35px;
+        }
+        #loading
+        {
+            float: right;
+            position: relative;
+            height: fit-content;
+            width: fit-content;
+        }
+        .pane
+        {
+            filter: drop-shadow(0 0 12px #007896);
+            outline: 3px solid #007896;
+            position: absolute;
+            display: inline-block;
+            background-image: linear-gradient(339deg, #11303800 , #11303885 100%);
+        }
+        #left_pane
+        {
+            border-top-left-radius: 20px;
+            border-bottom-right-radius: 56px;
+            top: 2%;
+            left: 2%;
+            height: fit-content;
+            width: 15vw;
+        }
+        #chat_area
+        {
+            position: absolute;
+            top: 2%;
+            left: 20%;
+            height: 95vh;
+            width: 72%;
+            box-shadow: inset 0 65px 65px -65px #007896, inset 0 -65px 65px -65px #007896;
+        }
+        #right_pane_1
+        {
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 56px;
+            top: 480px;
+            right: 2%;
+            height: 17vh;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .message_content
+        {
+            line-height: 2;
+            text-align: left;
+            width: 80%;
+        }
+        </style>
+        <script>
+            nova_data = 
+            {
+                "old": false,
+                "new": false,
+                "change": 
+                {
+                    "trigger": function(name)
+                    {
+                        Object.keys(nova_data.change.__subs[name]).forEach((key) =>
+                        {
+                            nova_data.change.__subs[name][key]()
+                        });
+                    },
+                    "__subs": 
+                    {
+                        "messages": [],
+                        "params": []
+                    },
+                },
+                "on_change": function(name,dothis)
+                {
+                    nova_data.change.__subs[name].push(dothis)
+                },
+                "first_update": true
+            }
+            $(document).ready(function()
+            {
+                /* $.get("/load_once", function(data, status)
+                {
+                    console.log("greeting");
+                }); */
+                $("#nova_ui").click(function()
+                {
+                    fetch("/").then(response => response.text()).then(html => {
+                        $("#main_content").html(html)
+                    });
+                });
+                get_updates = setInterval(function()
+                {
+                    if(nova_data.old["listening_for_name"])
+                    {
+                        $.ajax(
+                        {
+                            url: "get_updates",
+                            type: "POST",
+                            contentType: "application/json",
+                            success: function(data) 
+                            {
+                                nova_data.new = data;
+                                if(nova_data.old == false)
+                                {
+                                    nova_data.old = nova_data.new;
+                                }
+                                else
+                                {
+                                    Object.keys(nova_data.new).forEach((key) =>
+                                    {
+                                        if(key == "messages")
+                                        {
+                                            if(nova_data.old[key].length < nova_data.new[key].length)
+                                            {
+                                                nova_data.change.trigger('messages');
+                                            }
+                                        }
+                                    });
+                                    update_params();
+                                    nova_data.old = nova_data.new;
+                                    if(nova_data.first_update)
+                                    {
+                                        if(nova_data.new.messages.length > 1)
+                                        {
+                                            updates_messages();
+                                        }
+                                        update_params()
+                                    }
+                                    nova_data.first_update = false
+                                }
+                            }
+                        });
+                    }
+                },3000);
+                text_message_sent = false;
+                $("#save_chat_btn").click(function()
+                {
+                    $.get("/save_chats", function(data, status)
+                    {
+                        console.log("save chats");
+                    });
+                });
+                $("#code_pane").click(function()
+                {
+                    console.log("click")
+                    show_event_cover();
+                    if($(this).hasClass("small_tab"))
+                    {
+                        $("#event_cover").off()
+                        $("#event_cover").click(function()
+                        {
+                            $("#code_pane").addClass("small_tab");
+                            $(this).off();
+                            hide_event_cover();
+                        });
+                        $(this).removeClass("small_tab")
+                    }
+                });
+                
+                $("#python_console").click(function()
+                {
+                    
+                    console.log("click")
+                    show_event_cover();
+                    if($(this).hasClass("small_tab"))
+                    {
+                        $("#event_cover").off()
+                        $("#event_cover").click(function()
+                        {
+                            $("#python_console").addClass("small_tab");
+                            $(this).off();
+                            hide_event_cover();
+                        });
+                        $(this).removeClass("small_tab")
+                    }
+                });
+                $("#listen_for_name").change(function()
+                {
+                    if($(this).is(':checked'))
+                    {  
+                        $.get("/start_listening_for_name", function(data, status)
+                        {
+                            console.log("started listen");
+                        });
+                    }
+                    else
+                    {
+                        $.get("/stop_vision", function(data, status)
+                        {
+                            console.log("stopped listen");
+                        });
+                    }
+                });
+                $("#talk").change(function()
+                {
+                    console.log("fuck you")
+                    if($(this).is(':checked'))
+                    {  
+                        $.get("/talk_on", function(data, status)
+                        {
+                            console.log("started talk");
+                        });
+                    }
+                    else
+                    {
+                        $.get("/talk_off", function(data, status)
+                        {
+                            console.log("stopped talk");
+                        });
+                    }
+                });
+                $("#update_messages_btn").click(function()
+                {
+                    updates_messages();
+                });
+                $('#messageInput').on('input', function() 
+                {
+                    const currentValue = $(this).val();
+                    // Create a canvas element (it's not necessary to add it to the DOM)
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    context.font = $(this).css('font-size')+' '+$('body').css('font'); // Replace '16px Arial' with your desired font and size
+                    const width = context.measureText(currentValue).width;
+                    // The 'width' variable now holds the pixel width of the string
+                    if(width % ($(this).width()) == 0)
+                    {
+                        var current_height = $(this).height()
+                    }
+                });
+                $("#console_input").on('keydown', function(e) 
+                {
+                    if (e.key === 'Enter' && !e.shiftKey) 
+                    {
+                        console.log("enter")
+                        e.preventDefault(); // Prevents the default newline behavior
+                        // Your custom code here to handle the Enter key press
+                        var val = $("#console_input").val()
+                        $("#console_input").val('')
+                        $.ajax(
+                        {
+                            url: "python_command",
+                            type: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({ "text": val }),
+                            success: function(data) 
+                            {
+                                console.log("success");
+                            }
+                    });
+                    }
+                });
+                $('#messageInput').on('keydown', function(e) 
+                {
+                    if (e.key === 'Enter' && !e.shiftKey) 
+                    {
+                        console.log("enter")
+                        e.preventDefault(); // Prevents the default newline behavior
+                        // Your custom code here to handle the Enter key press
+                        var val = $("#messageInput").val()
+                        $("#messageInput").val('')
+                        send_text(val);
+                    }
+                });
+                updates_messages = function()
+                {
+                    if(text_message_sent !== true)
+                    { 
+                        count = 1
+                        var elem_array = []
+                        for(let i = 0; i < nova_data.new.messages.length; i ++)
+                        {
+                            message = nova_data.new.messages[i];
+                            if(message.role != 'system')
+                            {
+                                if(message.role == 'assistant')
+                                {
+                                    var message_type = 'nova_ret';
+                                }
+                                else
+                                {
+                                    var message_type = 'user_ret';
+                                }
+                                var elem = '<div class="message '+message_type+'"><span class="message_content">'+message.content+'</span></div>';
+                                elem_array.push(elem);
+                                count ++;
+                            }
+                        };
+                        $("#messages").html('');
+                        for(let i = 0; i < elem_array.length; i ++)
+                        {
+                            $("#messages").append(elem_array[i]);
+                        }
+                    }
+                    else
+                    {
+                        text_message_sent = false;
+                    }
+                };
+                nova_data.on_change('messages',updates_messages);
+                update_params = function()
+                {
+                    var data = nova_data.old;
+                    $("#listening_for_name").attr("checked",data.listening_for_name);
+                    $("#talk").attr("checked",data.talk);
+                    if(data.last_code.length > 0)
+                    {
+                        var old_code = $("#code_pane").html();
+                        var new_code = ''
+                        for(let i = 0; i < data.last_code.length; i ++)
+                        {
+                            new_code = new_code + data.last_code[i];
+                        }
+                        if(old_code != new_code)
+                        {
+                            $("#code_pane").html(new_code);
+                        }
+                    }
+                }
+                send_text = function(text)
+                {
+                    html_message(text,true)
+                    $.ajax(
+                    {
+                        url: "ask",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ "text": text }),
+                        success: function(data) 
+                        {
+                            html_message(data.ret_text,false);
+                        }
+                    });
+                };
+                html_message = function (text,user,slow)
+                {
+                    text_message_sent = true;
+                    if(!user)
+                    {
+                        var message_type = 'nova_ret';
+                    }
+                    else
+                    {
+                        var message_type = 'user_ret';
+                    }
+                    $("#messages").append('<div class="message '+message_type+'"><span class="message_content">'+text+'</span></div>');
+                }
+            });
+        </script>
+    </div>

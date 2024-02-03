@@ -79,10 +79,10 @@ class face():
 
     def start_detecting(self):
         try:
-            face_confirm_change_frames_amount = 10
+            face_confirm_change_frames_amount = 5
             face_confirm_count = 0
             
-            looking_confirm_change_frames_amount = 3
+            looking_confirm_change_frames_amount = 2
             looking_confirm_count = 0
 
             thread_reverify = threading.Thread(target = self.reverify_users,daemon = True)
