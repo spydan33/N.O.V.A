@@ -1,0 +1,33 @@
+V1.0.1 - Change Log: 
+New Files in V1.0.1:
+    attention.py -
+        A new module that will be basis for NOVAs context.
+        E.G. you ask her what emails you have. and say "can you forword that to my boss"
+        Attention is how she will know the important data about the email,event or otherwise.
+
+        This is also where she checks the email for wether its important enough to notify the user about
+
+        Various other things in attention:
+            - allowing NOVA to know the time
+            - item:
+                This is array and will appeneded to with priorty from various modules and will be the items notva attends to.
+                It is currently not used.
+    email_handler.py -
+        This is the module that handles NOVAs ability to interact with googles email API
+
+        It will make a new python object containg the details NOVA needs to interact with the google API and leaves
+        out the unimportant stuff.
+Various other Changes:
+    - Added attnetion.py
+    - Added email_handler.py
+    - fixed calendar_handler.py to include email scope when retreiving token.
+    - fixed calendar_handler.py to allow for updating events of today and later events
+    - made init greeting include email and calendar.
+    - tweaked face detection variables
+    - added future plans for NOVA
+    - added a small interval after nova responds while listening to allow for responce without needing look detection, name invocation, or typing
+    - tweaked tick time for nova
+    - adjusted smooth functions
+    - added framework for using openAI's TTS
+
+    

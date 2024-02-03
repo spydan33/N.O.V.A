@@ -1,0 +1,19 @@
+V1.1.0 Goals
+    The goal of getting to V1.1.0 is to allow NOVA to handle the email and calendar of the user, migrate her functionality to opperate off of an attention system and update the UI.
+    V1.1.0 Goals:
+        calendar:
+            - Notice conflicts and alert the user
+            - Move events
+            - create events
+            - delete events
+            - watch the calendar and alert the user of upcoming events
+        Email:
+            - Watch emails and alert the user to important new emails
+            - Write emails
+            - Mark emails as read
+            - Respond to emails
+            - create calendar events from emails.
+        Attention:
+            - Use the items list to run NOVAs functionality
+            - Allow NOVA to be aware of time
+            - keep data of last alerted item
