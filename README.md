@@ -101,4 +101,4 @@ In order to be recognised by NOVA, you will need to add pictures of your self to
   Integrate with other APIs or services for enhanced capabilities.
 ## Note
 * This is a high-level overview of NOVA's functionality. For detailed implementation and customization, refer to the source code.
-* I'm still working on the comments in the source code the documentation. NOVA has been one of my passion projects for quite some time and I wasn't ever planning on open sourcing her. Bear with me as I attempt to document her and make her easy for other devs to use. Feel free to message me if you have questions
+* I'm still working on the comments in the source code and the documentation. NOVA has been one of my passion projects for quite some time and I wasn't ever planning on open sourcing her. Bear with me as I attempt to document her and make her easy for other devs to use. Feel free to message me if you have questions
