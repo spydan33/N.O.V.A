@@ -4,6 +4,8 @@ class events:
         self.list = []
         self._events = {}
         self.verbose = True
+        self.last_event = ''
+        self.add("new_event")
 
     def on(self,name,do_function,data = '#1234NoDataInEvents1234#'):
         self._events[name].on(do_function,data,'NA')
@@ -11,6 +13,8 @@ class events:
     def post(self,name,data = '#1234NoDataInEvents1234#'):
         if(self.verbose):
             print(f"NEW EVENT: {name}")
+        self.last_event = name
+        self._events["new_event"].post(name)
         self._events[name].post(data)
 
     def add(self,name):

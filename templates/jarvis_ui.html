@@ -189,6 +189,8 @@
             
             <span id="Users_display" class="Users_display">Users: <span id="user_names"></span></span>
         </div>
+        <div id="right_pane_2" class="pane">
+        </div>
         <code id="code_pane" class="pane small_tab custom_scroll">
 
         </code>
@@ -450,6 +452,19 @@
             flex-direction: column;
             align-items: flex-start;
         }
+        
+        #right_pane_2
+        {
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 56px;
+            top: calc(500px + 17vh);
+            right: 2%;
+            height: 334px;
+            width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
         </style>
         <style>
                 
@@ -569,6 +584,7 @@
                     },
                     "__subs": 
                     {
+                        "new_event": [],
                         "messages": [],
                         "params": []
                     },
@@ -623,10 +639,10 @@
             }
             $(document).ready(function()
             {
-                /* $.get("/load_once", function(data, status)
+                $.get("/load_once", function(data, status)
                 {
                     console.log("greeting");
-                }); */
+                });
                 $("#gpt_ui").click(function()
                 {
                     fetch("/gpt_ui").then(response => response.text()).then(html => {
@@ -656,6 +672,13 @@
                                         if(nova_data.old[key].length < nova_data.new[key].length)
                                         {
                                             nova_data.change.trigger('messages');
+                                        }
+                                    }
+                                    if(key == "new_event")
+                                    {
+                                        if(nova_data.old[key] != nova_data.new[key])
+                                        {
+                                            nova_data.change.trigger('new_event');
                                         }
                                     }
                                 });
@@ -713,6 +736,13 @@
                     }
                 });
                 
+                $("#verify_user").click(function()
+                {
+                    $.get("/verify_user", function(data, status)
+                    {
+                        console.log("started listen");
+                    });
+                });
                 $("#python_console").click(function()
                 {
                     show_event_cover();
@@ -823,7 +853,6 @@
                         e.preventDefault(); // Prevents the default newline behavior
                         // Your custom code here to handle the Enter key press
                         var val = $("#console_input").val()
-                        $("#console_input").val('')
                         $.ajax(
                         {
                             url: "python_command",
@@ -954,6 +983,26 @@
                     $("#messages").append('<div class="message '+message_type+'">'+text+'</div>');
                 }
             });
+            
+            function update_events()
+            {
+                let index = 0;
+                let text = "NEW EVENT: " + nova_data.new.new_event;
+                const timer = setInterval(() => 
+                {
+                    if (index < text.length) 
+                    {
+                        $("#right_pane_2").append(text.charAt(index));
+                        index++;
+                    } 
+                    else 
+                    {
+                        $("#right_pane_2").append("<br>");
+                        clearInterval(timer);
+                    }
+                }, 200);
+            }
+            nova_data.on_change('new_event',update_events);
         </script>
     </div>
 </body>

@@ -10,9 +10,10 @@ from subprocess import CREATE_NO_WINDOW
 import os
 # Sleep for 5 seconds
 class speak():
-    def __init__(self,TTS_model = '_google'):
-
+    def __init__(self,nova,TTS_model = '_google'):
+        self.nova = nova
         self.elevenlabs_api_key = os.getenv("ELEVEN_LABS_API_KEY")
+        self.OAI_api_key = nova.OAI.api_key
         self.TTS_model = TTS_model
         if(TTS_model == '_pytts'):
             self.engine = pyttsx3.init()
@@ -53,6 +54,7 @@ class speak():
                 if chunk:
                     f.write(chunk)
         self.speak('output.mp3')
+        return True
 
     def say_pytts(self,text):
         
@@ -65,6 +67,15 @@ class speak():
         tts = gTTS(text=text, lang='en', slow=False)
         tts.save("output.mp3")
         self.speak("output.mp3")
+        return True
+
+
+    def say_OAI(self,text):
+        if(self.nova.OAI.say_OAI(text)):
+            self.speak("output.mp3")
+        else:
+            self.nova.talk = False
+        return True
      
     def speak(self,file_path):
         count = 0

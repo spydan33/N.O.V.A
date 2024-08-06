@@ -6,6 +6,8 @@ import logging
 import subprocess
 from nova import nova
 #url for flask is 'http://127.0.0.1:5000'
+
+#logging all server events
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 class NoLoggingFilter(logging.Filter):
@@ -14,13 +16,16 @@ class NoLoggingFilter(logging.Filter):
 
 
 app = Flask(__name__)
-
 werkzeug_logger = logging.getLogger('werkzeug')
 werkzeug_logger.addFilter(NoLoggingFilter())
+#end server events
 
-
+new_event = ''
 @app.route('/')
 def index():
+    """ current_file_path = os.path.abspath(__file__)
+    current_directory = os.path.dirname(current_file_path)
+    print("Current dir path:", current_directory) """
     return render_template('jarvis_ui.html')
 
 @app.route('/gpt_ui')
@@ -44,8 +49,8 @@ def get_updates():
         "face_count": nova.face.face_count,
         "smooth_functions": nova.smooth_functions,
         "show_vision": nova.face.show_vision,
-        "last_code": nova.last_code
-        
+        "last_code": nova.last_code,
+        "new_event": nova.events.last_event
     }
     if(nova.face.verified_face_count > 0):
         users = nova.users_api.get_verified()
@@ -58,7 +63,13 @@ def get_updates():
 @app.route('/load_once')
 def load_once():
     nova.calendar.update_nova_on_upcoming()
+    nova.attention.start()
     nova.prompted("greeting_events")
+    return 'true'
+
+@app.route('/verify_user')
+def verify_user():
+    nova.face.verify_face = True
     return 'true'
 
 @app.route('/save_chats')
@@ -129,4 +140,9 @@ def python_command():
 
 if __name__ == '__main__':
     nova = nova()
+    """ def update_event(name):
+        print("new event in f main")
+        print(name)
+        new_event = name
+    nova.events.on("new_event",update_event) """
     app.run(debug=False)

@@ -18,7 +18,7 @@ class face():
         self.eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
         self.listen_now = False
         self.draw_face = True
-        self.draw_eyes = False
+        self.draw_eyes = True
         self.show_vision = False
         self.face_count = 0
         self.verified_face_count = 0
@@ -79,10 +79,10 @@ class face():
 
     def start_detecting(self):
         try:
-            face_confirm_change_frames_amount = 10
+            face_confirm_change_frames_amount = 5
             face_confirm_count = 0
             
-            looking_confirm_change_frames_amount = 3
+            looking_confirm_change_frames_amount = 1
             looking_confirm_count = 0
 
             thread_reverify = threading.Thread(target = self.reverify_users,daemon = True)
@@ -154,10 +154,11 @@ class face():
         
         if(self.show_vision):
             cv2.imshow('Frame', frame)
+            cv2.moveWindow('Frame', 100, 100)
         
         listen_now = False
         for i in range(len(radius_percent_diffs)):
-            if radius_percent_diffs[i] < 0.1:
+            if radius_percent_diffs[i] < 0.05:
                 listen_now = True
                 #self.nova.events.post('face_looking_at_camera') //here
                 break
