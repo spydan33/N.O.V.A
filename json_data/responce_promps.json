@@ -1,6 +1,6 @@
 {
     "greeting_events": {
-        "prompt": "Give me a greeting. Include in the greating a short summary of the events I have comming up.",
+        "prompt": "Give me a greeting. Include in the greating a short summary of the events I have comming up and emails I have.",
         "use_default_personality": true,
         "needs_responce": false,
         "name": "greeting_events"

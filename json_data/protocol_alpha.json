@@ -29,11 +29,17 @@
         "class_name": "nova",
         "permission_level": "general"
     },
-    "escalate intellegence": {
-        "preset_responce": "switch_chat_model_gpt4",
-        "method_name": "change_open_AI_model",
+    "upscale intellegence": {
+        "preset_responce": "init",
+        "method_name": "upscale_intelligence",
         "class_name": "nova",
-        "permission_level": "5"
+        "permission_level": "general"
+    },
+    "downscale intellegence": {
+        "preset_responce": "init",
+        "method_name": "downscale_intelligence",
+        "class_name": "nova",
+        "permission_level": "general"
     },
     "default intellegence": {
         "preset_responce": "switch_chat_model_gpt3",

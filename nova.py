@@ -7,7 +7,9 @@ from force_responce import force_responce
 from users import users
 from events import events
 from calender_nova import calendar
-
+from attention import attention
+from email_handler import email_handler
+import json
 import traceback
 import threading
 import time
@@ -19,6 +21,7 @@ import os
 
 class nova:
     def __init__(self):
+        self.running = True
 
         cn = sqlite3.connect('nova.db')
         c = cn.cursor()
@@ -34,16 +37,16 @@ class nova:
         cn.commit()
         
         self.root_path = os.path.dirname(os.path.abspath(__file__))
-        self.tick_time = 0.3
+        self.tick_time = 0.2
         self.events = events()
         self.OAI = open_ai(self,False)
-        self.speak = speak('_elleven')
+        self.speak = speak(self,'_OAI')
+        #self.speak = speak(self)
         self.users_api = users() 
-        self.running = False
         self.face = face(self.tick_time,self)
         self.calendar = calendar(self)
         self.capture_face = False
-        self.talk = False
+        self.talk = True
         self.offline = False
         self.use_text = True
         self.responding = False
@@ -55,8 +58,19 @@ class nova:
         self.smooth_functions = False
         self.running_do_once = False
         self.last_code = []
-        self.button_listen_noise = False
-        self.use_calender = False
+        self.button_listen_noise = True
+        self.use_calender = True
+        self.email = email_handler()
+        self.attention = attention(self)
+
+        n_emails = 20
+        emails = self.email.get(n_emails)
+        counter = 0
+        for email_obj in emails:
+            with open(f'json_data/fuzzy_data/email/email{counter}.json', 'w') as file:
+                json.dump(email_obj.dump(), file)
+            counter = counter + 1
+
         self.events.add('offline')
         self.events.add('listening_for_name_start')
         self.events.add('listening_for_name_stop')
@@ -69,11 +83,10 @@ class nova:
         self.events.add('new_context')
         self.events.add('code_in_response')
 
-        
-
         #event listeners
         self.events.on('face_looking_at_camera',self.__do_once,'listen')
         self.events.on('code_in_response',self.__get_code)
+
     def __get_code(self,code_input):
         self.last_code = code_input
     def __do_once(self,method):
@@ -88,14 +101,28 @@ class nova:
 
             getattr(self, method)()
             self.running_do_once = False
+
+    def nova_unprompted(self,unprompted_string):
+        self.responding = True
+        print("------------------------------------------NOVA---------------------------------------\n")
+        print(unprompted_string+"\n") 
+        print("--------------------------------------------------------------------------------------\n")
+        if(self.talk):
+            self.speak.say(unprompted_string)
+        self.responding = False
+        return unprompted_string
+
     def prompted(self,prompted_name):
         prompt = force_responce.prompted(prompted_name)
         print(prompt)
         answer = self.OAI.prompted_responce(prompt)
-        self.speak.say(answer)
+        if(self.talk):
+            self.speak.say(answer)
     def start(self):
         try:
             self.running = True
+            
+            self.attention.start()
             face_started = False
             text_started = False
             while self.running:
@@ -165,32 +192,44 @@ class nova:
             traceback.print_exc()
             return False
 
+    
+
     def send_text(self,voice_string):
-        
-        self.responding = True
-        continue_listen = process_string.input_string(voice_string,self)
-        if(continue_listen == "quit"):
-            self.quit()
-        if(continue_listen == False):
-            return True
-        if(self.listening_for_name and len(self.non_activation_strings) > 0):
-            messages_append = [{"role": "system", "content": "*Nova heard this: "+" ".join(self.non_activation_strings)+" :but its clear it was not directed at her"}]
-            self.non_activation_strings = []
-        else:
-            messages_append = False
-        if(self.smooth_functions):
-            ret_1 = self.OAI.ask_functions(voice_string,True,messages_append)
-        else:
-            ret_1 = self.OAI.ask(voice_string,True,messages_append)
-        ret_processed = process_string.ret_string(ret_1,self)
-        explain = ret_processed[0]
-        processed_string = ret_processed[1]
-        if(explain):
-            print("------------------------------------------NOVA---------------------------------------\n")
-            print(processed_string+"\n")
-            print("--------------------------------------------------------------------------------------\n")
-            if(self.talk):
-                self.speak.say(processed_string)
+        processed_string = ''
+        def functionality(self,the_str,relisten = False):
+            if(the_str):
+                self.responding = True
+                continue_listen = process_string.input_string(the_str,self)
+                if(continue_listen == "quit"):
+                    self.quit()
+                if(continue_listen == False):
+                    return True
+                if(self.listening_for_name and len(self.non_activation_strings) > 0):
+                    messages_append = [{"role": "system", "content": "*Nova heard this: "+" ".join(self.non_activation_strings)+" :but its clear it was not directed at her"}]
+                    self.non_activation_strings = []
+                else:
+                    messages_append = False
+                if(self.smooth_functions):
+                    ret_1 = self.OAI.ask_functions(the_str,True,messages_append)
+                else:
+                    ret_1 = self.OAI.ask(the_str,True,messages_append)
+                ret_processed = process_string.ret_string(ret_1,self)
+                explain = ret_processed[0]
+                processed_string = ret_processed[1]
+                if(explain):
+                    print("------------------------------------------NOVA---------------------------------------\n")
+                    print(processed_string+"\n")
+                    print("--------------------------------------------------------------------------------------\n")
+                    if(self.talk):
+                        self.speak.say(processed_string)
+                if(relisten):
+                    return True
+                else:
+                    return False
+        functionality(self,voice_string)
+        if(self.listening_for_name):
+            while(functionality(self,voice.listen_quick(self.offline),True)):
+                functionality(self,voice.listen_quick(self.offline),True)
         self.responding = False
         return processed_string
 
@@ -218,6 +257,7 @@ class nova:
         if(not smooth_function):
             if(command["class_name"] == "nova"):
                 if(reply):
+                    pass
                     force_responce.predefined(command["preset_responce"])
                 else:
                     print("done")
@@ -229,9 +269,6 @@ class nova:
             print("___command handler____")
             print(command["action"],command["model_name"])
         return
-    def sleep(self):
-        self.set_talk_off()
-        self.change_to_text()
     
     def change_to_text(self):
         self.capture_face = False
@@ -280,9 +317,16 @@ class nova:
         return True
 
     def wake_up(self):
-        self.capture_face = True
+        self.detect_face()
+        self.listen_for_name()
         self.talk = True
         return True
+
+    def sleep(self):
+        self.talk= False
+        self.listen_for_name = False
+        self.face.stop_detect()
+        return
 
     def quit(self):
         self.running = False

@@ -11,8 +11,8 @@ class force_responce:
                 data = json.load(json_file)
                 forced = data[name]
                 print(forced["text"])
-                speech = speak()
-                speech.speak(forced["sound"])
+                #speech = speak()
+                #speech.speak(forced["sound"])
                 if(forced["needs_responce"]):
                     ret = force_responce.handle_user_responce(forced["responce_type"])
                     return ret

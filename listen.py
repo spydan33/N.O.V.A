@@ -38,24 +38,43 @@ class voice:
                     self.voice_string = voice_string
             ret = return_object()
             return ret
-    def listen(useOffline):
-        rec = sr.Recognizer()
-        with sr.Microphone() as source:
-            print('\n listening')
-            audio = rec.listen(source)
-            if (useOffline == True):
-                try:
+    def listen(useOffline,timeout=5,phrase_time_limit=6):
+        voice_string = False
+        try:
+            rec = sr.Recognizer()
+            with sr.Microphone() as source:
+                print('\n listening')
+                audio = rec.listen(source,timeout=5,phrase_time_limit=6)
+                if (useOffline == True):
                     voice_string = rec.recognize_sphinx(audio)
                     print('\n string heard:' + voice_string)
-                except sr.UnknownValueError:
-                    voice_string = False
-                print('\n string heard:' + voice_string)
-            else:
-                try:
+                else:
                     voice_string = rec.recognize_google(audio)
                     print('\n string heard:' + voice_string)
-                except sr.UnknownValueError:
-                    voice_string = False
-            return voice_string
+        except sr.UnknownValueError:
+            voice_string = False
+        except sr.WaitTimeoutError:
+            voice_string = False
+        return voice_string
+
+    def listen_quick(useOffline,timeout=3):
+        
+        voice_string = False
+        try:
+            rec = sr.Recognizer()
+            with sr.Microphone() as source:
+                print('\n listening')
+                audio = rec.listen(source,timeout)
+                if (useOffline == True):
+                    voice_string = rec.recognize_sphinx(audio)
+                    print('\n string heard:' + voice_string)
+                else:
+                    voice_string = rec.recognize_google(audio)
+                    print('\n string heard:' + voice_string)
+        except sr.UnknownValueError:
+            voice_string = False
+        except sr.WaitTimeoutError:
+            voice_string = False
+        return voice_string
 
 
