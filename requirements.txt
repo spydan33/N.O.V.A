@@ -19,4 +19,3 @@ beautifulsoup4
 setuptools
 face_recognition
 git+https://github.com/ageitgey/face_recognition_models
-BeautifulSoup
